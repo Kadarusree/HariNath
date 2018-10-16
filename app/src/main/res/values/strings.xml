@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">HARINATH GEOFENCING</string>
+
+
+    <string name="big_text">GEO FENCING SYSTEM</string>
+    <string name="small_text">MARKETING - SCHOOL ATTENDANCE</string>
+
+
+    <string name="username">username</string>
+    <string name="password">password</string>
+    <string name="login">LOGIN</string>
+
+
+    <string name="tank_number">Tank Number :</string>
+    <string name="species">Species :</string>
+    <string name="group">Group :</string>
+    <string name="entry_date">Entry Date :</string>
+    <string name="last_sample_date">Last Sample Date :</string>
+    <string name="inventory_number">Inventory Number :</string>
+    <string name="avergae_weight">Average Weight(kg) :</string>
+    <string name="bio_mass">Biomass(kg) :</string>
+    <string name="source_tank">Source Tank :</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+
+    <string name="first_name">First Name :</string>
+    <string name="last_name">Last Name :</string>
+    <string name="student_id">Mobile Number :</string>
+    <string name="email_id">Email ID :</string>
+    <string name="college_email">Email ID :</string>
+    <string name="password_">Password :</string>
+    <string name="confirm_password">Confirm Password :</string>
+
+    <string name="tank_details">Tank Details</string>
+
+
+</resources>
