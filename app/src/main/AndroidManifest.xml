@@ -18,8 +18,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".Signup" />
-        <activity android:name=".TankDetals" />
         <activity android:name=".DashboardActivity"></activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAcGa6rAwCaFAroV4xp4q4SJGX_EfWw8L8" />
+
     </application>
 
 </manifest>

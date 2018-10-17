@@ -30,8 +30,20 @@
     <string name="college_email">Email ID :</string>
     <string name="password_">Password :</string>
     <string name="confirm_password">Confirm Password :</string>
+    <string name="type">Registration Type : </string>
+
 
     <string name="tank_details">Tank Details</string>
 
+    <string name="add_fencing">NEW FENCING</string>
+    <string name="view_users">VIEW USERS</string>
+    <string name="add_offers">ADD OFFERS</string>
+    <string name="logout">LOGOUT</string>
+    <string name="confirm_logout">CONFIRM LOGOUT?</string>
 
+    <array name="types">
+        <item>Select</item>
+        <item>Business Unit</item>
+        <item>Parent</item>
+    </array>
 </resources>

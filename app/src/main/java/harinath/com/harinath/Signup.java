@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 public class Signup extends AppCompatActivity {
 
+    TextView mBigText, mSmallText;
 
 
     @Override
@@ -26,7 +27,14 @@ public class Signup extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_signup);
-
+        mBigText = (TextView) findViewById(R.id.big_text);
+        mSmallText = (TextView) findViewById(R.id.small_text);
+        Typeface tf = Typeface.createFromAsset
+                (getAssets(), "BigTetx.ttf");
+        Typeface tf2 = Typeface.createFromAsset
+                (getAssets(), "SmallText.ttf");
+        mBigText.setTypeface(tf);
+        mSmallText.setTypeface(tf2);
     }
 
     @Override
