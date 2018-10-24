@@ -13,12 +13,30 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import harinath.com.harinath.pojos.UserRegPojo;
 
 
 public class LoginActivity extends AppCompatActivity {
 
     TextView mBigText, mSmallText;
+    EditText username, password;
 
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase mFirebaseDatabse;
+    private DatabaseReference mDatabaseReference;
+
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +54,62 @@ public class LoginActivity extends AppCompatActivity {
         mBigText.setTypeface(tf);
         mSmallText.setTypeface(tf2);
 
+        username = findViewById(R.id.username);
+        password = findViewById(R.id.password);
+
+
+        mAuth = FirebaseAuth.getInstance();
+        mFirebaseDatabse = FirebaseDatabase.getInstance();
+        mDatabaseReference = mFirebaseDatabse.getReference("Users");
+
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setMessage("Authenticating...");
+        mProgressDialog.setCancelable(false);
     }
 
     public void login(View view) {
 
-        startActivity(new Intent(getApplicationContext(), DashboardActivity.class));
+        mProgressDialog.show();
+        mAuth.signInWithEmailAndPassword(username.getText().toString(), password.getText().toString())
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        mProgressDialog.dismiss();
+                        mProgressDialog.setMessage("Signing In");
+                        if (task.isSuccessful()) {
+                            mProgressDialog.show();
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            mDatabaseReference.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    mProgressDialog.dismiss();
+                                    if (dataSnapshot != null) {
+                                        UserRegPojo mUser = dataSnapshot.getValue(UserRegPojo.class);
+                                        Toast.makeText(getApplicationContext(), "Welcome " + mUser.getFirstname() + "", Toast.LENGTH_LONG).show();
+
+                                        Constants.username = mUser.getFirstname() + "/" + mUser.getLastname();
+
+                                    }
+
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    mProgressDialog.dismiss();
+                                }
+                            });
+                            // updateUI(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            //   Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            // updateUI(null);
+                        }
+
+                        // ...
+                    }
+                });
 
     }
 
@@ -51,4 +120,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    public void AdminLogin(View view) {
+        startActivity(new Intent(getApplicationContext(), DashboardActivity.class));
+    }
 }

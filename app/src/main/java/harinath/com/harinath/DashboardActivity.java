@@ -16,6 +16,7 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 public class DashboardActivity extends AppCompatActivity {
     int PLACE_PICKER_REQUEST = 1;
     LatLng location = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,11 +50,25 @@ public class DashboardActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(data, this);
 
-                location = new LatLng(place.getLatLng().latitude,place.getLatLng().longitude);
+                location = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude);
 
-               String toastMsg = String.format("Place: %s", place.getName());
+                String toastMsg = String.format("Place: %s", place.getName());
                 Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    public void launchUsers(View view) {
+        startActivity(new Intent(getApplicationContext(), UsersListActivity.class));
+    }
+
+    public void addOffer(View view) {
+        startActivity(new Intent(getApplicationContext(), AddOffer.class));
+
+    }
+
+    public void viewOffers(View view) {
+        startActivity(new Intent(getApplicationContext(), OffersList.class));
+
     }
 }

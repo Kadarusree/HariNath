@@ -9,7 +9,7 @@
         android:roundIcon="@drawable/ic_placeholder"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,12 +18,15 @@
             </intent-filter>
         </activity>
         <activity android:name=".Signup" />
-        <activity android:name=".DashboardActivity"></activity>
+        <activity android:name=".DashboardActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAcGa6rAwCaFAroV4xp4q4SJGX_EfWw8L8" />
 
+        <activity android:name=".UsersListActivity" />
+        <activity android:name=".AddOffer" />
+        <activity android:name=".OffersList"></activity>
     </application>
 
 </manifest>

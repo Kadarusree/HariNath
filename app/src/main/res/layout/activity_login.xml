@@ -106,7 +106,7 @@
                 android:background="@drawable/shape_blue_round"
                 android:textColor="@color/colorWhite"
                 android:layout_alignParentLeft="true"
-                android:onClick="login"
+                android:onClick="AdminLogin"
                 android:textSize="@dimen/dp_18"></Button>
             <Button
                 android:layout_width="150dp"
