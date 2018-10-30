@@ -25,24 +25,10 @@ public class DashboardActivity extends AppCompatActivity {
 
 
     public void createFencing(View view) {
-        Dialog d = new Dialog(DashboardActivity.this);
-        d.setContentView(R.layout.dialog_create_fencing);
-        ImageView pick_location = d.findViewById(R.id.pick_location);
-        pick_location.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+       /* */
 
-                try {
-                    startActivityForResult(builder.build(DashboardActivity.this), PLACE_PICKER_REQUEST);
-                } catch (GooglePlayServicesRepairableException e) {
-                    e.printStackTrace();
-                } catch (GooglePlayServicesNotAvailableException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        d.show();
+
+       startActivity(new Intent(getApplicationContext(), MapsActivity.class));
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
