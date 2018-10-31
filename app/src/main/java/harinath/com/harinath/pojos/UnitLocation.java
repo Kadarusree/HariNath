@@ -9,6 +9,8 @@ public class UnitLocation {
         this.longitude = longitude;
     }
 //Test
+
+    //Bug Resolved
     public UnitLocation() {
     }
 
