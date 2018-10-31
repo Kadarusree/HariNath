@@ -3,6 +3,7 @@ package harinath.com.harinath;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,11 +15,16 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -26,7 +32,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
+import harinath.com.harinath.pojos.UnitLocation;
 import harinath.com.harinath.pojos.UserRegPojo;
 
 
@@ -34,19 +42,22 @@ public class Signup extends AppCompatActivity {
 
     TextView mBigText, mSmallText, btnSignup;
 
+
+    ImageView pickLocation;
     private FirebaseAuth mAuth;
     private FirebaseDatabase mFirebaseDatabse;
     private DatabaseReference mDatabaseReference;
-
     private ProgressDialog mProgressDialog;
 
+    int PLACE_PICKER_REQUEST = 1;
+    UnitLocation location = null;
 
-    EditText firstName, lastName, email, mobile_number, password, confirmPassword, businsessName;
+    EditText firstName, lastName, email, mobile_number, password, confirmPassword, businsessName, businessUnitLocationName;
 
     Spinner reg_type;
     String type = "";
 
-    LinearLayout mBusinesslayout;
+    LinearLayout mBusinesslayout, mBusinessLocationLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +68,15 @@ public class Signup extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
         mBigText = (TextView) findViewById(R.id.big_text);
         mSmallText = (TextView) findViewById(R.id.small_text);
+        pickLocation = (ImageView) findViewById(R.id.pick_location);
         Typeface tf = Typeface.createFromAsset
                 (getAssets(), "BigTetx.ttf");
         Typeface tf2 = Typeface.createFromAsset
                 (getAssets(), "SmallText.ttf");
         mBigText.setTypeface(tf);
         mSmallText.setTypeface(tf2);
+
+        String token = FirebaseInstanceId.getInstance().getInstance().getToken();
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -82,7 +96,9 @@ public class Signup extends AppCompatActivity {
         confirmPassword = findViewById(R.id.edt_password);
         reg_type = findViewById(R.id.reg_type);
         mBusinesslayout = findViewById(R.id.layout_business_unit);
+        mBusinessLocationLayout = findViewById(R.id.layout_business_unit_location);
         businsessName = findViewById(R.id.edt_business_unit_name);
+        businessUnitLocationName = findViewById(R.id.edt_business_unit_location);
         reg_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -90,14 +106,19 @@ public class Signup extends AppCompatActivity {
                     case 0:
                         type = "";
                         mBusinesslayout.setVisibility(View.INVISIBLE);
+                        mBusinessLocationLayout.setVisibility(View.INVISIBLE);
+
                         break;
                     case 1:
                         type = "Business unit";
                         mBusinesslayout.setVisibility(View.VISIBLE);
+                        mBusinessLocationLayout.setVisibility(View.VISIBLE);
                         break;
                     case 2:
                         type = "Parent";
                         mBusinesslayout.setVisibility(View.INVISIBLE);
+                        mBusinessLocationLayout.setVisibility(View.INVISIBLE);
+
                         break;
                 }
             }
@@ -118,6 +139,21 @@ public class Signup extends AppCompatActivity {
                 if (validadtions()) {
                     signUp(email.getText().toString(), password.getText().toString());
 
+                }
+            }
+        });
+
+        pickLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+
+                try {
+                    startActivityForResult(builder.build(Signup.this), PLACE_PICKER_REQUEST);
+                } catch (GooglePlayServicesRepairableException e) {
+                    e.printStackTrace();
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -214,5 +250,16 @@ public class Signup extends AppCompatActivity {
         return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
 
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(data, this);
 
+                location = new UnitLocation(place.getLatLng().latitude, place.getLatLng().longitude);
+
+               /* String toastMsg = String.format("Place: %s", place.getName());
+                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();*/
+            }
+        }
+    }
 }

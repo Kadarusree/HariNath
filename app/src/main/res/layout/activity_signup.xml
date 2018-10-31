@@ -283,6 +283,41 @@
                     android:paddingLeft="@dimen/dp_5"
                     android:id="@+id/edt_business_unit_name"/>
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="@dimen/dp_15"
+                android:layout_marginRight="@dimen/dp_15"
+                android:layout_weight="0.15"
+                android:id="@+id/layout_business_unit_location">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.4"
+                    android:gravity="left|center"
+                    android:text="Business Unit Name"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dp_15" />
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/dp_5"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:layout_weight="0.5"
+                    android:gravity="left|center"
+                    android:background="@drawable/bg_edittext"
+                    android:paddingLeft="@dimen/dp_5"
+                    android:id="@+id/edt_business_unit_location"/>
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.1"
+                    android:layout_margin="@dimen/dp_1"
+                    android:layout_height="match_parent"
+                    android:id="@+id/pick_location"
+                    android:src="@drawable/ic_placeholder"/>
+            </LinearLayout>
         </LinearLayout>
 
 
