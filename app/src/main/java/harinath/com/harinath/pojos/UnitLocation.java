@@ -8,7 +8,7 @@ public class UnitLocation {
         this.latitude = latitude;
         this.longitude = longitude;
     }
-
+//Test
     public UnitLocation() {
     }
 
