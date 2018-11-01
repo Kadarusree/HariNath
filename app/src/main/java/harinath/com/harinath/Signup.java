@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -59,6 +60,10 @@ public class Signup extends AppCompatActivity {
 
     LinearLayout mBusinesslayout, mBusinessLocationLayout;
 
+    SharedPreferences mSharedPreferences;
+    String fb_key;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,8 +81,8 @@ public class Signup extends AppCompatActivity {
         mBigText.setTypeface(tf);
         mSmallText.setTypeface(tf2);
 
-        String token = FirebaseInstanceId.getInstance().getInstance().getToken();
-
+        mSharedPreferences = getSharedPreferences("FB_KEY", CONTEXT_IGNORE_SECURITY);
+        fb_key = mSharedPreferences.getString("key", "");
 
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabse = FirebaseDatabase.getInstance();
@@ -107,7 +112,7 @@ public class Signup extends AppCompatActivity {
                         type = "";
                         mBusinesslayout.setVisibility(View.INVISIBLE);
                         mBusinessLocationLayout.setVisibility(View.INVISIBLE);
-
+                        location = null;
                         break;
                     case 1:
                         type = "Business unit";
@@ -116,6 +121,7 @@ public class Signup extends AppCompatActivity {
                         break;
                     case 2:
                         type = "Parent";
+                        location = null;
                         mBusinesslayout.setVisibility(View.INVISIBLE);
                         mBusinessLocationLayout.setVisibility(View.INVISIBLE);
 
@@ -178,7 +184,7 @@ public class Signup extends AppCompatActivity {
                     UserRegPojo mUser = new UserRegPojo(firstName.getText().toString().trim(),
                             lastName.getText().toString().trim(),
                             password, mobile_number.getText().toString().trim(),
-                            email, type, businsessName.getText().toString());
+                            email, type, businsessName.getText().toString(), location, fb_key, user.getUid());
                     mProgressDialog.show();
                     mDatabaseReference.child(user.getUid()).setValue(mUser).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override

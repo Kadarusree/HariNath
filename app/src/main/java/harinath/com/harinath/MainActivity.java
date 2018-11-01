@@ -1,9 +1,8 @@
 package harinath.com.harinath;
 
-import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,4 +13,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public static void makeNotificationIntent(Context applicationContext, String msg) {
+    }
 }

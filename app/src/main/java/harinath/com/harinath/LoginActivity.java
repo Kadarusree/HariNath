@@ -28,6 +28,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import harinath.com.harinath.pojos.UserRegPojo;
 
@@ -61,7 +62,6 @@ public class LoginActivity extends AppCompatActivity {
 
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
-
 
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabse = FirebaseDatabase.getInstance();

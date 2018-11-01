@@ -2,15 +2,21 @@ package harinath.com.harinath;
 
 import android.content.res.Resources;
 import android.graphics.Rect;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -21,10 +27,17 @@ import java.util.List;
 
 import harinath.com.harinath.pojos.UserRegPojo;
 
-public class UsersListActivity extends AppCompatActivity {
+public class UsersListActivity extends AppCompatActivity implements
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener{
+    private static final String TAG = "UsersListActivity" ;
     private RecyclerView recyclerView;
     private List<UserRegPojo> mUsersList;
     MeetingsAdapter mAdapter;
+
+
+    private GoogleApiClient googleApiClient;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +45,8 @@ public class UsersListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_users_list);
         mUsersList = new ArrayList<>();
         recyclerView = (RecyclerView) findViewById(R.id.usersList);
-
-        mAdapter = new MeetingsAdapter(this, mUsersList);
+        createGoogleApi();
+        mAdapter = new MeetingsAdapter(this, mUsersList,googleApiClient);
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -43,7 +56,16 @@ public class UsersListActivity extends AppCompatActivity {
 
         getUsers();
     }
-
+    private void createGoogleApi() {
+        Log.d(TAG, "createGoogleApi()");
+        if ( googleApiClient == null ) {
+            googleApiClient = new GoogleApiClient.Builder( this )
+                    .addConnectionCallbacks( this )
+                    .addOnConnectionFailedListener( this )
+                    .addApi( LocationServices.API )
+                    .build();
+        }
+    }
     private void getUsers() {
         FirebaseDatabase.getInstance().getReference("Users").addValueEventListener(new ValueEventListener() {
             @Override
@@ -67,6 +89,21 @@ public class UsersListActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 
     public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
@@ -102,6 +139,18 @@ public class UsersListActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        googleApiClient.connect();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        googleApiClient.disconnect();
     }
 
     /**
