@@ -20,9 +20,8 @@
     <string name="type">Registration Type : </string>
 
 
-    <string name="tank_details">Tank Details</string>
 
-    <string name="add_fencing">NEW FENCING</string>
+    <string name="add_fencing">NEW SCHOOL FENCING</string>
     <string name="view_users">VIEW USERS</string>
     <string name="add_offers">ADD OFFERS</string>
     <string name="logout">LOGOUT</string>

@@ -90,20 +90,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     // Draw Geofence circle on GoogleMap
-    private Circle geoFenceLimits;
 
     private void drawGeofence(UnitLocation unitLocation) {
-        Log.d(TAG, "drawGeofence()");
 
-        if (geoFenceLimits != null)
-            geoFenceLimits.remove();
 
         CircleOptions circleOptions = new CircleOptions()
-                .center(new LatLng(unitLocation.getLatitude(), unitLocation.getLatitude()))
+                .center(new LatLng(unitLocation.getLatitude(), unitLocation.getLongitude()))
                 .strokeColor(Color.argb(50, 70, 70, 70))
                 .fillColor(Color.argb(100, 150, 150, 150))
                 .radius(200.0f);
-        geoFenceLimits = mMap.addCircle(circleOptions);
+       mMap.addCircle(circleOptions);
 
         MarkerOptions mMarker = new MarkerOptions();
         mMarker.position(new LatLng(unitLocation.getLatitude(), unitLocation.getLongitude()));
@@ -112,5 +108,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new com.google.android.gms.maps.model.LatLng(unitLocation.getLatitude(), unitLocation.getLongitude()), 16));
         mMap.animateCamera(CameraUpdateFactory.zoomIn());// Zoom out to zoom level 10, animating with a duration of 2 seconds.
         mMap.animateCamera(CameraUpdateFactory.zoomTo(16), 2000, null);
+        mMap.addMarker(mMarker);
     }
 }

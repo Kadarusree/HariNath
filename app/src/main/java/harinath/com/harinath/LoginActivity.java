@@ -94,6 +94,14 @@ public class LoginActivity extends AppCompatActivity {
 
                                         Constants.username = mUser.getFirstname() + "/" + mUser.getLastname();
 
+                                        if(mUser.getType().equalsIgnoreCase("Parent")){
+                                            startActivity(new Intent(getApplicationContext(),ParentDashboard.class));
+                                        }
+                                        else {
+                                            startActivity(new Intent(getApplicationContext(),BusinessDashboard.class));
+
+                                        }
+
                                     }
 
                                 }
