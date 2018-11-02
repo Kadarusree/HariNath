@@ -76,7 +76,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_below="@id/meeting_title"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_launcher_background"
+                android:src="@drawable/ic_dot_menu"
                />
 
         </RelativeLayout>

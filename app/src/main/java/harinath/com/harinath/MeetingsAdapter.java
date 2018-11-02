@@ -91,6 +91,10 @@ public class MeetingsAdapter extends RecyclerView.Adapter<MeetingsAdapter.MyView
         holder.email.setText("Email : " + mUser.getEmailID());
         holder.type.setText("User Type : " + mUser.getType());
 
+        if (mUser.getType().equalsIgnoreCase("parent")){
+            holder.overflow.setVisibility(View.INVISIBLE);
+        }
+
         holder.overflow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

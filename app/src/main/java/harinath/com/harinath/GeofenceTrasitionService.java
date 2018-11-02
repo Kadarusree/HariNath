@@ -75,7 +75,7 @@ public class GeofenceTrasitionService extends IntentService {
         Log.i(TAG, "sendNotification: " + msg );
  
         // Intent to start the main Activity
-        Intent notificationIntent = new Intent(getApplicationContext(),MainActivity.class);
+        Intent notificationIntent = new Intent(getApplicationContext(),OffersList.class);
  
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addParentStack(MainActivity.class);
@@ -97,7 +97,7 @@ public class GeofenceTrasitionService extends IntentService {
                 .setSmallIcon(R.drawable.ic_media_play_light)
                 .setColor(Color.RED)
                 .setContentTitle(msg)
-                .setContentText("Geofence Notification!")
+                .setContentText("Marketing Notification!")
                 .setContentIntent(notificationPendingIntent)
                 .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND)
                 .setAutoCancel(true);

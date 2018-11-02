@@ -20,7 +20,6 @@
     <string name="type">Registration Type : </string>
 
 
-
     <string name="add_fencing">NEW SCHOOL FENCING</string>
     <string name="view_users">VIEW USERS</string>
     <string name="add_offers">ADD OFFERS</string>
@@ -32,5 +31,6 @@
         <item>Business Unit</item>
         <item>Parent</item>
     </array>
-    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_maps">Fencings</string>
+    <string name="title_activity_my_fencing">My Fencing</string>
 </resources>

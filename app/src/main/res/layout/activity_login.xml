@@ -74,6 +74,8 @@
                 android:textColorHint="@color/blue"
                 android:gravity="center"
                 android:id="@+id/username"
+                android:singleLine="true"
+                android:imeOptions="actionNext"
                 android:paddingLeft="@dimen/dp_10"/>
         </RelativeLayout>
         <RelativeLayout
@@ -124,7 +126,16 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.1">
-
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:text="Forgot Password?"
+                android:textColor="@color/blue"
+                android:textStyle="bold"
+                android:gravity="right"
+                android:onClick="forgotPassword"
+                android:textSize="@dimen/dp_18"
+                />
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
@@ -140,7 +151,6 @@
                     android:gravity="center"
                     android:layout_centerInParent="true"
                     android:onClick="signup"
-
                     android:textSize="@dimen/dp_18"/>
         </RelativeLayout>
     </LinearLayout>

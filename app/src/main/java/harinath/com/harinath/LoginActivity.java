@@ -74,55 +74,60 @@ public class LoginActivity extends AppCompatActivity {
 
     public void login(View view) {
 
-        mProgressDialog.show();
-        mAuth.signInWithEmailAndPassword(username.getText().toString(), password.getText().toString())
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        mProgressDialog.dismiss();
-                        mProgressDialog.setMessage("Signing In");
-                        if (task.isSuccessful()) {
-                            mProgressDialog.show();
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            mDatabaseReference.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    mProgressDialog.dismiss();
-                                    if (dataSnapshot != null) {
-                                        UserRegPojo mUser = dataSnapshot.getValue(UserRegPojo.class);
-                                        Toast.makeText(getApplicationContext(), "Welcome " + mUser.getFirstname() + "", Toast.LENGTH_LONG).show();
 
-                                        Constants.username = mUser.getFirstname() + "/" + mUser.getLastname();
+        if (validations())
+        {
+            mProgressDialog.show();
+            mAuth.signInWithEmailAndPassword(username.getText().toString(), password.getText().toString())
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            mProgressDialog.dismiss();
+                            mProgressDialog.setMessage("Signing In");
+                            if (task.isSuccessful()) {
+                                mProgressDialog.show();
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                mDatabaseReference.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        mProgressDialog.dismiss();
+                                        if (dataSnapshot != null) {
+                                            UserRegPojo mUser = dataSnapshot.getValue(UserRegPojo.class);
+                                            Toast.makeText(getApplicationContext(), "Welcome " + mUser.getFirstname() + "", Toast.LENGTH_LONG).show();
 
-                                        if(mUser.getType().equalsIgnoreCase("Parent")){
-                                            startActivity(new Intent(getApplicationContext(),ParentDashboard.class));
-                                        }
-                                        else {
-                                            startActivity(new Intent(getApplicationContext(),BusinessDashboard.class));
+                                            Constants.username = mUser.getFirstname() + "/" + mUser.getLastname();
+                                            Constants.currentUser = mUser;
+
+                                            if (mUser.getType().equalsIgnoreCase("Parent")) {
+                                                startActivity(new Intent(getApplicationContext(), ParentDashboard.class));
+                                            } else {
+                                                startActivity(new Intent(getApplicationContext(), BusinessDashboard.class));
+
+                                            }
 
                                         }
 
                                     }
 
-                                }
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+                                        mProgressDialog.dismiss();
+                                    }
+                                });
+                                // updateUI(user);
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                //   Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show();
+                                // updateUI(null);
+                            }
 
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-                                    mProgressDialog.dismiss();
-                                }
-                            });
-                            // updateUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            //   Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                            // updateUI(null);
+                            // ...
                         }
+                    });
+        }
 
-                        // ...
-                    }
-                });
 
     }
 
@@ -143,20 +148,22 @@ public class LoginActivity extends AppCompatActivity {
         checklocation();
     }
 
-    public void checklocation(){
-        LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+    public void checklocation() {
+        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         boolean gps_enabled = false;
         boolean network_enabled = false;
 
         try {
             gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        } catch(Exception ex) {}
+        } catch (Exception ex) {
+        }
 
         try {
             network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        } catch(Exception ex) {}
+        } catch (Exception ex) {
+        }
 
-        if(!gps_enabled && !network_enabled) {
+        if (!gps_enabled && !network_enabled) {
             // notify user
             AlertDialog.Builder dialog = new AlertDialog.Builder(LoginActivity.this);
             dialog.setMessage("Please Enable Location");
@@ -164,7 +171,7 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface paramDialogInterface, int paramInt) {
                     // TODO Auto-generated method stub
-                    Intent myIntent = new Intent( Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                     startActivity(myIntent);
                     //get gps
                 }
@@ -179,5 +186,38 @@ public class LoginActivity extends AppCompatActivity {
             });
             dialog.show();
         }
+    }
+
+    public void forgotPassword(View view) {
+        mProgressDialog.show();
+        FirebaseAuth.getInstance().sendPasswordResetEmail(username.getText().toString())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        mProgressDialog.dismiss();
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "Email Sent to reset password", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Email is not registered", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+
+    }
+
+    public boolean validations() {
+        boolean valid = true;
+        if (username.getText().toString().trim().equalsIgnoreCase("")) {
+            valid = false;
+            username.setError("Enter Registered Email");
+        }
+        if (password.getText().toString().trim().equalsIgnoreCase("")) {
+            valid = false;
+            password.setError("Enter Password");
+
+        }
+
+        return valid;
+
     }
 }

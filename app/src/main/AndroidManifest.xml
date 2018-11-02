@@ -33,9 +33,15 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAcGa6rAwCaFAroV4xp4q4SJGX_EfWw8L8" />
 
-        <activity android:name=".UsersListActivity" />
-        <activity android:name=".AddOffer" />
-        <activity android:name=".OffersList" />
+        <activity
+            android:name=".UsersListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AddOffer"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".OffersList"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
@@ -47,8 +53,17 @@
         </service>
         <service android:name=".GeofenceTrasitionService" />
 
-        <activity android:name=".BusinessDashboard" />
-        <activity android:name=".ParentDashboard"></activity>
+        <activity
+            android:name=".BusinessDashboard"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ParentDashboard"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MyFencing"
+            android:label="@string/title_activity_my_fencing"
+            android:parentActivityName=".BusinessDashboard"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

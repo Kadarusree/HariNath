@@ -262,7 +262,7 @@ public class Signup extends AppCompatActivity {
                 Place place = PlacePicker.getPlace(data, this);
 
                 location = new UnitLocation(place.getLatLng().latitude, place.getLatLng().longitude);
-
+                businessUnitLocationName.setText(String.format("%s", place.getName()));
                /* String toastMsg = String.format("Place: %s", place.getName());
                 Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();*/
             }
