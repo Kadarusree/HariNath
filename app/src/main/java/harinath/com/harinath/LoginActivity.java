@@ -44,6 +44,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private ProgressDialog mProgressDialog;
 
+    private  SessionManager mSessionManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("Authenticating...");
         mProgressDialog.setCancelable(false);
+        mSessionManager = new SessionManager(this);
     }
 
     public void login(View view) {
@@ -97,8 +100,9 @@ public class LoginActivity extends AppCompatActivity {
 
                                             Constants.username = mUser.getFirstname() + "/" + mUser.getLastname();
                                             Constants.currentUser = mUser;
+                                            mSessionManager.createSession(mUser);
 
-                                            if (mUser.getType().equalsIgnoreCase("Parent")) {
+                                            if (mUser.getType().equalsIgnoreCase("Parent")||mUser.getType().equalsIgnoreCase("Child")) {
                                                 startActivity(new Intent(getApplicationContext(), ParentDashboard.class));
                                             } else {
                                                 startActivity(new Intent(getApplicationContext(), BusinessDashboard.class));
@@ -177,7 +181,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
             dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-
                 @Override
                 public void onClick(DialogInterface paramDialogInterface, int paramInt) {
 
@@ -219,5 +222,8 @@ public class LoginActivity extends AppCompatActivity {
 
         return valid;
 
+    }
+
+    public void save(View view) {
     }
 }

@@ -26,9 +26,9 @@ public class DashboardActivity extends AppCompatActivity {
 
     public void createFencing(View view) {
        /* */
+        startActivity(new Intent(getApplicationContext(), CreateSchoolFencing.class));
 
 
-       startActivity(new Intent(getApplicationContext(), MapsActivity.class));
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -56,5 +56,13 @@ public class DashboardActivity extends AppCompatActivity {
     public void viewOffers(View view) {
         startActivity(new Intent(getApplicationContext(), OffersList.class));
 
+    }
+
+    public void add_child(View view) {
+        startActivity(new Intent(getApplicationContext(), AddChlid.class));
+    }
+
+    public void viewFencing(View view) {
+        startActivity(new Intent(getApplicationContext(), MapsActivity.class));
     }
 }

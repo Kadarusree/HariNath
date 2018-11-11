@@ -33,4 +33,5 @@
     </array>
     <string name="title_activity_maps">Fencings</string>
     <string name="title_activity_my_fencing">My Fencing</string>
+    <string name="title_activity_create_school_fencing">Map</string>
 </resources>

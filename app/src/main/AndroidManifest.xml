@@ -63,7 +63,12 @@
             android:name=".MyFencing"
             android:label="@string/title_activity_my_fencing"
             android:parentActivityName=".BusinessDashboard"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
+        <activity android:name=".AddChlid" />
+        <activity
+            android:name=".CreateSchoolFencing"
+            android:label="@string/title_activity_create_school_fencing" />
+        <activity android:name=".LocationHistory"></activity>
     </application>
 
 </manifest>

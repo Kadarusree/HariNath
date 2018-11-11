@@ -143,7 +143,7 @@ public class MeetingsAdapter extends RecyclerView.Adapter<MeetingsAdapter.MyView
     }
 
     /////////////////////////---------Code to Create Fencing---------//////////////////////////
-    private static final long GEO_DURATION = 60 * 60 * 1000;
+    private static final long GEO_DURATION = 30* 24*60 * 60 * 1000;
     private static final String GEOFENCE_REQ_ID = "My Geofence";
     private static final float GEOFENCE_RADIUS = 200.0f; // in meters
 
