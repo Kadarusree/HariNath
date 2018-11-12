@@ -46,12 +46,17 @@ public class ParentDashboard extends AppCompatActivity implements GoogleApiClien
     }
 
     public void viewFencing(View view) {
+        startActivity(new Intent(getApplicationContext(),SchoolFencingMap.class));
+
     }
 
     public void viewOffers(View view) {
+        startActivity(new Intent(getApplicationContext(),OffersList.class));
+
     }
 
     public void trackLocations(View view) {
+        startActivity(new Intent(getApplicationContext(),LocationHistory.class));
     }
 
     public void logout(View view) {

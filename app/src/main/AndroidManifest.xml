@@ -68,7 +68,10 @@
         <activity
             android:name=".CreateSchoolFencing"
             android:label="@string/title_activity_create_school_fencing" />
-        <activity android:name=".LocationHistory"></activity>
+        <activity android:name=".LocationHistory" />
+        <activity
+            android:name=".SchoolFencingMap"
+            android:label="@string/title_activity_school_fencing_map"></activity>
     </application>
 
 </manifest>

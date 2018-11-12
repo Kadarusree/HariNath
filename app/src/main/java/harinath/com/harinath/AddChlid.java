@@ -50,6 +50,8 @@ public class AddChlid extends AppCompatActivity {
     String fb_key, parent_name, parentID;
     FirebaseAuth mAuth;
 
+    int pos = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +87,7 @@ public class AddChlid extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mUsers.clear();
                 mNames.clear();
+                mNames.add("Select");
                 for (DataSnapshot dpst : dataSnapshot.getChildren()) {
 
 
@@ -97,16 +100,23 @@ public class AddChlid extends AppCompatActivity {
 
                 }
 
-                adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, mNames);
+                adapter = new ArrayAdapter<>(getApplicationContext(), R.layout.spin_item, mNames);
                 parent.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
                 parent.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        mobile_number.setText(mUsers.get(i).getMobileNumber());
-                        parent_name = mNames.get(i);
-                        fb_key = mUsers.get(i).getFb_key();
-                        parentID = mUsers.get(i).getmyKey();
+                        pos = i;
+                        if (i>0){
+                            mobile_number.setText(mUsers.get(i-1).getMobileNumber());
+                            parent_name = mNames.get(i);
+                            fb_key = mUsers.get(i-1).getFb_key();
+                            parentID = mUsers.get(i-1).getmyKey();
+                        }
+                        else {
+                            mobile_number.setText("");
+                        }
+
                     }
 
                     @Override
@@ -146,6 +156,9 @@ public class AddChlid extends AppCompatActivity {
         if (password.getText().toString().length() < 6) {
             password.setError("Password must be minimum 6 characters");
             isValid = false;
+        }
+        if (pos==0){
+Toast.makeText(getApplicationContext(),"Select Parent",Toast.LENGTH_SHORT).show();
         }
 
 

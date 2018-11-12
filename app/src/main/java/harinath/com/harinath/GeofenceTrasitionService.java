@@ -224,6 +224,7 @@ public class GeofenceTrasitionService extends IntentService {
     }
 
     public void updateLocationInDB(HistoryPojo mHistoryPojo){
+        unregisterReceiver(GeofenceTrasitionService.this.mBatInfoReceiver);
         FirebaseDatabase.getInstance().getReference("LocationHistory").child(System.currentTimeMillis()+"").setValue(mHistoryPojo);
     }
 
