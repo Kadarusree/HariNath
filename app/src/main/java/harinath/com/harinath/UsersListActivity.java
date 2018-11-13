@@ -33,7 +33,7 @@ public class UsersListActivity extends AppCompatActivity implements
     private static final String TAG = "UsersListActivity" ;
     private RecyclerView recyclerView;
     private List<UserRegPojo> mUsersList;
-    MeetingsAdapter mAdapter;
+    UsersListAdapter mAdapter;
 
 
     private GoogleApiClient googleApiClient;
@@ -46,7 +46,7 @@ public class UsersListActivity extends AppCompatActivity implements
         mUsersList = new ArrayList<>();
         recyclerView = (RecyclerView) findViewById(R.id.usersList);
         createGoogleApi();
-        mAdapter = new MeetingsAdapter(this, mUsersList,googleApiClient);
+        mAdapter = new UsersListAdapter(this, mUsersList,googleApiClient);
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(mLayoutManager);

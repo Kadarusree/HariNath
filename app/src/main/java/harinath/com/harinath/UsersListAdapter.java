@@ -36,7 +36,7 @@ import harinath.com.harinath.pojos.UserRegPojo;
  * Created by srikanthk on 7/26/2018.
  */
 
-public class MeetingsAdapter extends RecyclerView.Adapter<MeetingsAdapter.MyViewHolder>
+public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.MyViewHolder>
 
 {
 
@@ -44,7 +44,7 @@ public class MeetingsAdapter extends RecyclerView.Adapter<MeetingsAdapter.MyView
     private List<UserRegPojo> mMeetingsList;
     int selected_position = 0;
 
-    String TAG = MeetingsAdapter.class.getName();
+    String TAG = UsersListAdapter.class.getName();
     GoogleApiClient googleApiClient;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -63,18 +63,18 @@ public class MeetingsAdapter extends RecyclerView.Adapter<MeetingsAdapter.MyView
     }
 
 
-    public MeetingsAdapter(Activity mContext, List<UserRegPojo> mMeetingsList, GoogleApiClient googleApiClient) {
+    public UsersListAdapter(Activity mContext, List<UserRegPojo> mMeetingsList, GoogleApiClient googleApiClient) {
         this.mContext = mContext;
         this.mMeetingsList = mMeetingsList;
         this.googleApiClient = googleApiClient;
     }
 
     @Override
-    public MeetingsAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public UsersListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.meeting_list_item, parent, false);
 
-        return new MeetingsAdapter.MyViewHolder(itemView);
+        return new UsersListAdapter.MyViewHolder(itemView);
     }
 
     int position_;

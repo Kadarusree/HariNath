@@ -9,6 +9,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,6 +33,8 @@ public class LocationHistory extends AppCompatActivity {
         ArrayList<HistoryPojo> mHistoryPojos;
     private RecyclerView recyclerView;
     LocationsAdapter mAdapter;
+
+    SessionManager mSessionManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,14 +44,14 @@ public class LocationHistory extends AppCompatActivity {
         mDatabaseReference = mFirebaseDatabase.getReference("LocationHistory");
         recyclerView = findViewById(R.id.LocationsHistoryList);
         mAdapter = new LocationsAdapter(this, mHistoryPojos);
-
+mSessionManager = new SessionManager(this);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
-        mDatabaseReference.addValueEventListener(new ValueEventListener() {
+        mDatabaseReference.orderByChild("parentID").equalTo(mSessionManager.getREG_ID()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mHistoryPojos.clear();
@@ -58,7 +61,14 @@ public class LocationHistory extends AppCompatActivity {
                     mHistoryPojos.add(dataSnapshot1.getValue(HistoryPojo.class));
                 }
 
-                mAdapter.notifyDataSetChanged();
+                if (mHistoryPojos.size()>0)
+                {
+                    mAdapter.notifyDataSetChanged();
+
+                }
+else {
+                    Toast.makeText(getApplicationContext(),"No Histroy Found for your child",Toast.LENGTH_SHORT).show();
+                }
 
             }
 

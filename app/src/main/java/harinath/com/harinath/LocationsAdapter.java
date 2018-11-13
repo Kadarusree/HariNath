@@ -1,36 +1,19 @@
 package harinath.com.harinath;
 
-import android.Manifest;
 import android.app.Activity;
-import android.app.PendingIntent;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Typeface;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.Geofence;
-import com.google.android.gms.location.GeofencingRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
-import harinath.com.harinath.pojos.Fencing;
 import harinath.com.harinath.pojos.HistoryPojo;
-import harinath.com.harinath.pojos.UserRegPojo;
 
 public class LocationsAdapter extends RecyclerView.Adapter<LocationsAdapter.MyViewHolder>
 
@@ -40,7 +23,7 @@ public class LocationsAdapter extends RecyclerView.Adapter<LocationsAdapter.MyVi
     private List<HistoryPojo> mHistoryPojoList;
     int selected_position = 0;
 
-    String TAG = MeetingsAdapter.class.getName();
+    String TAG = UsersListAdapter.class.getName();
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView name, mobile, email, type, meeting_for;
@@ -80,12 +63,14 @@ public class LocationsAdapter extends RecyclerView.Adapter<LocationsAdapter.MyVi
         String fontPath = "BigTetx.ttf";
         Typeface tf = Typeface.createFromAsset(mContext.getAssets(), fontPath);
         holder.name.setTypeface(tf);
-        holder.name.setText(" Time " + mUser.getTime()+"");
-        holder.mobile.setText("Phone No : " + mUser.getType());
+        holder.name.setText(" Time " + getDate(Long.parseLong(mUser.getTime()),"dd/MM/yyyy hh:mm:ss")+"");
+        holder.mobile.setText("Type : " + mUser.getType());
         holder.email.setText("Name : " + mUser.getName());
-        holder.type.setText("Battery : " + mUser.getBattry_status());
+        holder.type.setText("Battery Level: " + mUser.getBattry_status()+"%");
 
             holder.overflow.setVisibility(View.INVISIBLE);
+
+
 
 
     }
@@ -98,6 +83,14 @@ public class LocationsAdapter extends RecyclerView.Adapter<LocationsAdapter.MyVi
 
 
 
-
+    public static String getDate(long milliSeconds, String dateFormat)
+    {
+        // Create a DateFormatter object for displaying date in specified format.
+        SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
+        // Create a calendar object that will convert the date and time value in milliseconds to date.
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(milliSeconds);
+        return formatter.format(calendar.getTime());
+    }
 
 }

@@ -22,6 +22,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofenceStatusCodes;
 import com.google.android.gms.location.GeofencingEvent;
+import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.FirebaseDatabase;
@@ -83,14 +84,20 @@ public class GeofenceTrasitionService extends IntentService {
         }
 
 
-        mFusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                location_ = new LatLng(location.getLatitude(), location.getLongitude());
-                registerReceiver(GeofenceTrasitionService.this.mBatInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        if (mSessionManager.getTYPE().equalsIgnoreCase("Child"))
+        {
+            mFusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    location_ = new LatLng(location.getLatitude(), location.getLongitude());
+                    mFusedLocationClient.removeLocationUpdates(new LocationCallback());
+                    registerReceiver(GeofenceTrasitionService.this.mBatInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 
-            }
-        });
+                }
+            });
+        }
+
+
 
     }
 

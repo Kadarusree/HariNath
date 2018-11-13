@@ -11,7 +11,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -25,42 +24,22 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import harinath.com.harinath.pojos.Fencing;
+import harinath.com.harinath.pojos.ShoolFencingPojo;
 
-public class ParentDashboard extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
-
+public class ChildActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
     private static final String TAG = "ParentDashboard";
 
-    private static final long GEO_DURATION = 60 * 60 * 1000;
+    private static final long GEO_DURATION = 30 * 24 * 60 * 60 * 1000;
     private static final String GEOFENCE_REQ_ID = "My Geofence";
-    private static final float GEOFENCE_RADIUS = 200.0f; // in meters
+    private   float GEOFENCE_RADIUS = 200.0f; // in meters
     private final int GEOFENCE_REQ_CODE = 0;
     private PendingIntent geoFencePendingIntent;
     GoogleApiClient mGoogleApiClient;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_parent_dashboard);
+        setContentView(R.layout.activity_child);
         createGoogleApi();
-    }
-
-    public void viewFencing(View view) {
-        startActivity(new Intent(getApplicationContext(),SchoolFencingMap.class));
-
-    }
-
-    public void viewOffers(View view) {
-        startActivity(new Intent(getApplicationContext(),OffersList.class));
-
-    }
-
-    public void trackLocations(View view) {
-        startActivity(new Intent(getApplicationContext(),LocationHistory.class));
-    }
-
-    public void logout(View view) {
-        ParentDashboard.this.finish();
     }
 
     @Override
@@ -69,8 +48,8 @@ public class ParentDashboard extends AppCompatActivity implements GoogleApiClien
     }
 
     @Override
-    public void onConnectionSuspended(int i) {
 
+    public void onConnectionSuspended(int i) {
     }
 
     @Override
@@ -78,20 +57,18 @@ public class ParentDashboard extends AppCompatActivity implements GoogleApiClien
 
     }
 
+
     public void readFencings() {
         FirebaseDatabase mFirebaseDatabase
                 = FirebaseDatabase.getInstance();
-        DatabaseReference mReference = mFirebaseDatabase.getReference("BusinessFencings");
+        DatabaseReference mReference = mFirebaseDatabase.getReference("SchoolFencing");
         mReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot!=null) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren())
-                    {
-                        Fencing mFencing = snapshot.getValue(Fencing.class);
-                        startGeofence(mFencing);
-                    }
-
+                    ShoolFencingPojo mFencing = dataSnapshot.getValue(ShoolFencingPojo.class);
+                    GEOFENCE_RADIUS = mFencing.getRadius();
+                    startGeofence(mFencing);
                 }
             }
 
@@ -103,9 +80,9 @@ public class ParentDashboard extends AppCompatActivity implements GoogleApiClien
     }
 
     // Start Geofence creation process
-    private void startGeofence(Fencing fencing) {
+    private void startGeofence(ShoolFencingPojo fencing) {
         Log.i(TAG, "startGeofence()");
-        Geofence geofence = createGeofence(new LatLng(fencing.getLocation().getLatitude(), fencing.getLocation().getLongitude()), GEOFENCE_RADIUS, fencing.getName());
+        Geofence geofence = createGeofence(new LatLng(fencing.getmLocation().getLatitude(), fencing.getmLocation().getLongitude()), GEOFENCE_RADIUS, fencing.getName());
 
         GeofencingRequest geofenceRequest = createGeofenceRequest(geofence);
         addGeofence(geofenceRequest);
@@ -140,16 +117,16 @@ public class ParentDashboard extends AppCompatActivity implements GoogleApiClien
         if (geoFencePendingIntent != null)
             return geoFencePendingIntent;
 
-        Intent intent = new Intent(ParentDashboard.this, GeofenceTrasitionService.class);
+        Intent intent = new Intent(ChildActivity.this, GeofenceTrasitionService.class);
         return PendingIntent.getService(
-                ParentDashboard.this, GEOFENCE_REQ_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                ChildActivity.this, GEOFENCE_REQ_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     // Check for permission to access Location
     private boolean checkPermission() {
         Log.d(TAG, "checkPermission()");
         // Ask for permission if it wasn't granted yet
-        return (ContextCompat.checkSelfPermission(ParentDashboard.this, Manifest.permission.ACCESS_FINE_LOCATION)
+        return (ContextCompat.checkSelfPermission(ChildActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED);
     }
 
@@ -158,7 +135,7 @@ public class ParentDashboard extends AppCompatActivity implements GoogleApiClien
     private void askPermission() {
         Log.d(TAG, "askPermission()");
         ActivityCompat.requestPermissions(
-                ParentDashboard.this,
+                ChildActivity.this,
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                 REQ_PERMISSION
         );

@@ -60,4 +60,6 @@ public class SessionManager {
     public String getPARENT_ID() {
         return mSharedPref.getString(PARENT_ID,"");    }
 
+    public String getREG_ID() {
+        return mSharedPref.getString(REG_ID,"");    }
 }

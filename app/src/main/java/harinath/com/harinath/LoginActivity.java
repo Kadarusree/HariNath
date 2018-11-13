@@ -102,11 +102,15 @@ public class LoginActivity extends AppCompatActivity {
                                             Constants.currentUser = mUser;
                                             mSessionManager.createSession(mUser);
 
-                                            if (mUser.getType().equalsIgnoreCase("Parent")||mUser.getType().equalsIgnoreCase("Child")) {
+                                            if (mUser.getType().equalsIgnoreCase("Parent")) {
                                                 startActivity(new Intent(getApplicationContext(), ParentDashboard.class));
-                                            } else {
+                                            }
+                                            else if(mUser.getType().equalsIgnoreCase("Child")) {
+                                                startActivity(new Intent(getApplicationContext(), ChildActivity.class));
+                                            }
+                                                else
+                                             {
                                                 startActivity(new Intent(getApplicationContext(), BusinessDashboard.class));
-
                                             }
 
                                         }

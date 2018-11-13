@@ -28,10 +28,13 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import harinath.com.harinath.pojos.Fencing;
+import harinath.com.harinath.pojos.ShoolFencingPojo;
 import harinath.com.harinath.pojos.UnitLocation;
 import harinath.com.harinath.pojos.UserRegPojo;
 
@@ -95,6 +98,7 @@ public class CreateSchoolFencing extends FragmentActivity implements OnMapReadyC
             @Override
             public void onMapClick(LatLng latLng) {
                 fencing_latLng = latLng;
+                mMap.clear();
                 mMap.addMarker(new MarkerOptions().position(latLng));
             }
         });
@@ -104,7 +108,7 @@ public class CreateSchoolFencing extends FragmentActivity implements OnMapReadyC
 
 
         if (fencing_latLng != null) {
-            Dialog d = new Dialog(this);
+         final    Dialog d = new Dialog(this);
             d.setContentView(R.layout.dialog_create_fencing);
             final EditText name, radius, location;
             Button save;
@@ -118,8 +122,17 @@ public class CreateSchoolFencing extends FragmentActivity implements OnMapReadyC
             save.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    startGeofence(fencing_latLng);
+
+                    if (!radius.getText().toString().equalsIgnoreCase("")){
+                        GEOFENCE_RADIUS = Float.parseFloat(radius.getText().toString());
+                    }
+                    else
+                    {
+
+                    }
+                  //  startGeofence(fencing_latLng);
                     saveFencingtoDB(name.getText().toString());
+                    d.dismiss();
 
 
                 }
@@ -134,7 +147,7 @@ public class CreateSchoolFencing extends FragmentActivity implements OnMapReadyC
     /////////////////////////---------Code to Create Fencing---------//////////////////////////
     private static final long GEO_DURATION = 30 * 24 * 60 * 60 * 1000;
     private static final String GEOFENCE_REQ_ID = "My Geofence";
-    private static final float GEOFENCE_RADIUS = 200.0f; // in meters
+    private   float GEOFENCE_RADIUS = 200.0f; // in meters
 
     private PendingIntent geoFencePendingIntent;
     private final int GEOFENCE_REQ_CODE = 0;
@@ -217,8 +230,16 @@ public class CreateSchoolFencing extends FragmentActivity implements OnMapReadyC
         FirebaseDatabase mFirebaseDatabase
                 = FirebaseDatabase.getInstance();
         DatabaseReference mReference = mFirebaseDatabase.getReference("SchoolFencing");
-        Fencing mPojo = new Fencing(new UnitLocation(fencing_latLng.latitude, fencing_latLng.longitude), fencing_name);
-        mReference.setValue(mPojo);
+        ShoolFencingPojo mPojo = new ShoolFencingPojo(new UnitLocation(fencing_latLng.latitude, fencing_latLng.longitude), GEOFENCE_RADIUS,fencing_name);
+        mReference.setValue(mPojo).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful())
+                {
+                    Toast.makeText(getApplicationContext(),"School Fencing has created sucessfully",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override
