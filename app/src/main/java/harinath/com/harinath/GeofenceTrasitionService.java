@@ -157,7 +157,7 @@ public class GeofenceTrasitionService extends IntentService {
                 .setSmallIcon(R.drawable.ic_media_play_light)
                 .setColor(Color.RED)
                 .setContentTitle(msg)
-                .setContentText("Marketing Notification!")
+                .setContentText("Geofence Notification!")
                 .setContentIntent(notificationPendingIntent)
                 .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND)
                 .setAutoCancel(true);
